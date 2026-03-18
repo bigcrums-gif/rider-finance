@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="theme-color" content="#0d0d14">
+<title>&#xB77C;&#xC774;&#xB354; &#xAC00;&#xACC4;&#xBD80;</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{background:#0d0d14;color:#e8e8f0;font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;min-height:100vh;}
+button{font-family:inherit;cursor:pointer;}
+input{font-family:inherit;-webkit-appearance:none;box-sizing:border-box;}
+input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;}
+.page{display:none;} .page.active{display:block;}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:100;flex-direction:column;align-items:center;justify-content:flex-end;}
+.modal-bg.open{display:flex;}
+.modal-box{width:100%;max-width:480px;background:#13131f;border-radius:20px 20px 0 0;padding:22px;max-height:92vh;overflow-y:auto;}
+.confirm-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:200;align-items:center;justify-content:center;padding:20px;}
+.confirm-bg.open{display:flex;}
+.inp{width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:12px 14px;color:#e8e8f0;font-size:15px;outline:none;}
+.inp::placeholder{color:#3a4060;}
+.fl{font-size:13px;color:#7c8db5;margin-bottom:6px;font-weight:600;}
+.card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:16px;margin-bottom:14px;}
+.card-title{font-size:11px;font-weight:700;color:#7c8db5;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;}
+.mn{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.ab{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);color:#e8e8f0;border-radius:8px;padding:8px 16px;font-size:15px;}
+.mh{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
+.mc{width:34px;height:34px;border-radius:17px;border:none;background:rgba(255,255,255,0.1);color:#a0aec0;font-size:18px;}
+.chip{padding:8px 14px;border-radius:20px;font-size:13px;border:1px solid rgba(255,255,255,0.12);background:none;color:#6b7a99;}
+.chip.on{border-color:#4f8ef7;background:rgba(79,142,247,0.15);color:#4f8ef7;}
+.tog-row{display:flex;align-items:center;justify-content:space-between;background:rgba(79,142,247,0.08);border:1px solid rgba(79,142,247,0.2);border-radius:10px;padding:12px 16px;margin-bottom:14px;}
+.sw{width:48px;height:26px;border-radius:13px;border:none;position:relative;}
+.kn{width:20px;height:20px;border-radius:10px;background:#fff;position:absolute;top:3px;transition:left 0.2s;}
+.ri{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:14px;margin-bottom:8px;display:flex;align-items:center;gap:12px;}
+.wc{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:14px;margin-bottom:10px;}
+.sc{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:14px;margin-bottom:10px;}
+.mg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px;}
+.mc3{border-radius:10px;padding:8px;text-align:center;}
+.tax-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
+.empty{text-align:center;padding:50px 20px;}
+.inp-row{margin-bottom:14px;}
+.inp2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.section-label{font-size:12px;font-weight:700;color:#4f8ef7;letter-spacing:1px;margin-bottom:10px;margin-top:4px;padding-bottom:6px;border-bottom:1px solid rgba(79,142,247,0.2);}
+.goal-card{border-radius:16px;padding:18px;margin-bottom:14px;}
+.streak-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(251,146,60,0.15);border:1px solid rgba(251,146,60,0.3);border-radius:20px;padding:6px 14px;font-size:13px;font-weight:700;color:#fb923c;}
+</style>
+</head>
+<body>
+
+<!-- HOME -->
+<div id="pg-home" class="page active">
+<div style="max-width:480px;margin:0 auto;padding:32px 20px 40px;background:linear-gradient(180deg,#0f1729,#0d0d14);min-height:100vh;">
+  <div style="text-align:center;margin-bottom:20px;">
+    <div style="font-size:48px;margin-bottom:6px;">&#x1F6F5;</div>
+    <div style="font-size:22px;font-weight:800;color:#fff;">&#xB77C;&#xC774;&#xB354; &#xAC00;&#xACC4;&#xBD80;</div>
+    <div style="font-size:10px;color:#4a5568;letter-spacing:2px;margin-top:3px;">RIDER FINANCE MANAGER</div>
+  </div>
+
+  <!-- 이달 요약 -->
+  <div style="background:linear-gradient(135deg,rgba(79,142,247,0.15),rgba(124,77,255,0.15));border:1px solid rgba(79,142,247,0.25);border-radius:20px;padding:18px;margin-bottom:16px;">
+    <div id="home-ml" style="font-size:12px;color:#7c8db5;margin-bottom:10px;text-align:center;"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;text-align:center;">
+      <div><div style="font-size:11px;color:#4ade80;margin-bottom:3px;">&#xC218;&#xC785;</div><div id="h-inc" style="font-size:14px;font-weight:800;color:#4ade80;"></div></div>
+      <div><div style="font-size:11px;color:#f87171;margin-bottom:3px;">&#xC9C0;&#xCD9C;</div><div id="h-exp" style="font-size:14px;font-weight:800;color:#f87171;"></div></div>
+      <div><div style="font-size:11px;color:#60a5fa;margin-bottom:3px;">&#xC21C;&#xC774;&#xC775;</div><div id="h-net" style="font-size:14px;font-weight:800;"></div></div>
+    </div>
+  </div>
+
+  <!-- 하루 수입 입력 버튼 -->
+  <button onclick="openM('m-daily')" style="width:100%;padding:16px;border-radius:16px;border:none;background:linear-gradient(135deg,#4f8ef7,#7c4dff);color:#fff;font-weight:800;font-size:17px;margin-bottom:20px;box-shadow:0 4px 20px rgba(79,142,247,0.4);">
+    &#x2795; &#xD558;&#xB8E8; &#xC218;&#xC785; &#xC785;&#xB825;
+  </button>
+
+  <!-- 4개 메인 카드 -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+    <button onclick="goPage('pg-goal')" style="background:linear-gradient(135deg,rgba(251,146,60,0.12),rgba(251,191,36,0.12));border:1px solid rgba(251,146,60,0.3);border-radius:18px;padding:22px 12px;text-align:center;">
+      <div style="font-size:40px;margin-bottom:8px;">&#x1F3AF;</div>
+      <div style="font-size:16px;font-weight:800;color:#fb923c;margin-bottom:3px;">&#xBAA9;&#xD45C;&#xB2EC;&#xC131;</div>
+      <div style="font-size:11px;color:#4a5568;line-height:1.5;">&#xC8FC;&#xAC04;/&#xC6D4;&#xAC04;<br>&#xBAA9;&#xD45C; &#xAD00;&#xB9AC;</div>
+    </button>
+    <button onclick="goPage('pg-work')" style="background:linear-gradient(135deg,rgba(250,204,21,0.12),rgba(52,211,153,0.12));border:1px solid rgba(250,204,21,0.3);border-radius:18px;padding:22px 12px;text-align:center;">
+      <div style="font-size:40px;margin-bottom:8px;">&#x23F1;&#xFE0F;</div>
+      <div style="font-size:16px;font-weight:800;color:#fbbf24;margin-bottom:3px;">&#xADFC;&#xBB34;&#xD3C9;&#xAC00;</div>
+      <div style="font-size:11px;color:#4a5568;line-height:1.5;">&#xC2DC;&#xAE09;&#xB2E8;&#xAC00;<br>&#xAC70;&#xB9AC; &#xBD84;&#xC11D;</div>
+    </button>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
+    <button onclick="goPage('pg-settle')" style="background:linear-gradient(135deg,rgba(52,211,153,0.12),rgba(96,165,250,0.12));border:1px solid rgba(52,211,153,0.3);border-radius:18px;padding:22px 12px;text-align:center;">
+      <div style="font-size:40px;margin-bottom:8px;">&#x1F3E6;</div>
+      <div style="font-size:16px;font-weight:800;color:#34d399;margin-bottom:3px;">&#xC8FC;&#xAC04;&#xC815;&#xC0B0;</div>
+      <div style="font-size:11px;color:#4a5568;line-height:1.5;">&#xC6D0;&#xCC9C;&#xC9D5;&#xC218;<br>&#xACF5;&#xC81C; &#xAD00;&#xB9AC;</div>
+    </button>
+    <button onclick="goPage('pg-tax')" style="background:linear-gradient(135deg,rgba(167,139,250,0.12),rgba(248,113,113,0.12));border:1px solid rgba(167,139,250,0.3);border-radius:18px;padding:22px 12px;text-align:center;">
+      <div style="font-size:40px;margin-bottom:8px;">&#x1F9FE;</div>
+      <div style="font-size:16px;font-weight:800;color:#a78bfa;margin-bottom:3px;">&#xC138;&#xAE08;&#xC2E0;&#xACE0;</div>
+      <div style="font-size:11px;color:#4a5568;line-height:1.5;">&#xC5F0;&#xAC04; &#xC815;&#xC0B0;<br>&#xC138;&#xAE08; &#xC790;&#xB8CC;</div>
+    </button>
+  </div>
+
+  <!-- 월별 차트 -->
+  <div class="card">
+    <div class="card-title">&#xC6D4;&#xBCC4; &#xC218;&#xC785; &#xD604;&#xD669;</div>
+    <div id="h-chart" style="display:flex;align-items:flex-end;gap:3px;height:65px;"></div>
+    <div style="display:flex;gap:16px;justify-content:center;margin-top:8px;">
+      <div style="display:flex;align-items:center;gap:4px;font-size:11px;color:#6b7a99;"><div style="width:8px;height:8px;border-radius:2px;background:#4f8ef7;"></div>&#xC218;&#xC785;</div>
+      <div style="display:flex;align-items:center;gap:4px;font-size:11px;color:#6b7a99;"><div style="width:8px;height:8px;border-radius:2px;background:#f87171;"></div>&#xC9C0;&#xCD9C;</div>
+    </div>
+  </div>
+
+  <!-- 최근 수입 내역 -->
+  <div class="card">
+    <div class="card-title">&#xCD5C;&#xADFC; &#xC218;&#xC785; &#xB0B4;&#xC5ED;</div>
+    <div id="h-recent"></div>
+  </div>
+
+  <!-- Footer -->
+  <div style="border-top:1px solid rgba(255,255,255,0.06);padding-top:16px;text-align:center;margin-top:4px;">
+    <div style="font-size:11px;color:#4f8ef7;font-weight:700;margin-bottom:3px;">&#x1F6F5; &#xB77C;&#xC774;&#xB354; &#xAC00;&#xACC4;&#xBD80;</div>
+    <div style="font-size:10px;color:#4a5568;margin-bottom:8px;">&copy; 2025 &#xC6D4;&#xCC9C;&#xAE30;&#xC0AC; &middot; All Rights Reserved</div>
+    <div style="background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.12);border-radius:10px;padding:8px 12px;">
+      <div style="font-size:10px;color:#34d399;font-weight:700;margin-bottom:2px;">&#x1F512; &#xAC1C;&#xC778;&#xC815;&#xBCF4; &#xBBF8;&#xC218;&#xC9D1; &#xC571;</div>
+      <div style="font-size:10px;color:#4a5568;line-height:1.6;">&#xBAA8;&#xB4E0; &#xB370;&#xC774;&#xD130;&#xB294; &#xBCF8;&#xC778; &#xAE30;&#xAE30;&#xC5D0;&#xB9CC; &#xC800;&#xC7A5;&#xB429;&#xB2C8;&#xB2E4;.</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- GOAL PAGE -->
+<div id="pg-goal" class="page">
+<div style="max-width:480px;margin:0 auto;padding:20px 16px 60px;">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+    <button onclick="goHome()" style="background:none;border:none;color:#7c8db5;font-size:15px;padding:0;">&#x2190; &#xD648;</button>
+    <button onclick="openM('m-goal-set')" style="background:linear-gradient(135deg,#fb923c,#fbbf24);border:none;border-radius:22px;padding:8px 18px;color:#000;font-weight:700;font-size:13px;">&#x2699;&#xFE0F; &#xBAA9;&#xD45C; &#xC124;&#xC815;</button>
+  </div>
+  <div style="font-size:22px;font-weight:800;margin-bottom:4px;">&#x1F3AF; &#xBAA9;&#xD45C; &#xB2EC;&#xC131;</div>
+  <div style="font-size:13px;color:#4a5568;margin-bottom:20px;">&#xC8FC;&#xAC04; &middot; &#xC6D4;&#xAC04; &#xBAA9;&#xD45C; &#xAD00;&#xB9AC;</div>
+  <div id="goal-content"></div>
+</div>
+</div>
+
+<!-- WORK PAGE -->
+<div id="pg-work" class="page">
+<div style="max-width:480px;margin:0 auto;padding:20px 16px 60px;">
+  <div style="margin-bottom:18px;">
+    <button onclick="goHome()" style="background:none;border:none;color:#7c8db5;font-size:15px;padding:0;">&#x2190; &#xD648;</button>
+  </div>
+  <div style="font-size:22px;font-weight:800;margin-bottom:4px;">&#x23F1;&#xFE0F; &#xADFC;&#xBB34; &#xD3C9;&#xAC00;</div>
+  <div style="font-size:13px;color:#4a5568;margin-bottom:18px;">&#xC2DC;&#xAE09; &middot; &#xAC74;&#xB2F9; &#xB2E8;&#xAC00; &middot; &#xC6B4;&#xD589;&#xAC70;&#xB9AC; &#xBD84;&#xC11D;</div>
+  <div class="mn"><button class="ab" onclick="pm()">&#x25C0;</button><span id="w-ml" style="font-size:17px;font-weight:700;"></span><button class="ab" onclick="nm()">&#x25B6;</button></div>
+  <div id="w-content"></div>
+</div>
+</div>
+
+<!-- SETTLE PAGE -->
+<div id="pg-settle" class="page">
+<div style="max-width:480px;margin:0 auto;padding:20px 16px 60px;">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+    <button onclick="goHome()" style="background:none;border:none;color:#7c8db5;font-size:15px;padding:0;">&#x2190; &#xD648;</button>
+    <button onclick="openM('m-settle')" style="background:linear-gradient(135deg,#34d399,#60a5fa);border:none;border-radius:22px;padding:8px 18px;color:#000;font-weight:700;font-size:13px;">+ &#xC815;&#xC0B0; &#xB4F1;&#xB85D;</button>
+  </div>
+  <div style="font-size:22px;font-weight:800;margin-bottom:4px;">&#x1F3E6; &#xC8FC;&#xAC04; &#xC815;&#xC0B0;</div>
+  <div style="font-size:13px;color:#4a5568;margin-bottom:18px;">&#xC6D0;&#xCC9C;&#xC9D5;&#xC218; &middot; &#xC0B0;&#xC7AC;&#xBCF4;&#xD5D8; &middot; &#xACE0;&#xC6A9;&#xBCF4;&#xD5D8; &#xAD00;&#xB9AC;</div>
+  <div class="mn"><button class="ab" onclick="pm()">&#x25C0;</button><span id="s-ml" style="font-size:17px;font-weight:700;"></span><button class="ab" onclick="nm()">&#x25B6;</button></div>
+  <div id="s-content"></div>
+</div>
+</div>
+
+<!-- TAX PAGE -->
+<div id="pg-tax" class="page">
+<div style="max-width:480px;margin:0 auto;padding:20px 16px 60px;">
+  <div style="margin-bottom:18px;"><button onclick="goHome()" style="background:none;border:none;color:#7c8db5;font-size:15px;padding:0;">&#x2190; &#xD648;</button></div>
+  <div style="font-size:22px;font-weight:800;margin-bottom:4px;">&#x1F9FE; &#xC138;&#xAE08; &#xC2E0;&#xACE0;</div>
+  <div style="font-size:13px;color:#4a5568;margin-bottom:18px;">&#xC5F0;&#xAC04; &#xC218;&#xC785;&#xC9C0;&#xCD9C; &#xC9D1;&#xACC4; &#xBC0F; &#xC138;&#xAE08; &#xC790;&#xB8CC;</div>
+  <div id="tax-content"></div>
+</div>
+</div>
+
+<!-- MODAL: 하루 수입 입력 -->
+<div class="modal-bg" id="m-daily" onclick="if(event.target===this)closeM('m-daily')">
+<div class="modal-box">
+  <div class="mh"><div style="width:34px;"></div><div style="font-weight:700;font-size:18px;">&#x1F4B0; &#xD558;&#xB8E8; &#xC218;&#xC785; &#xC785;&#xB825;</div><button class="mc" onclick="closeM('m-daily')">&#x2715;</button></div>
+
+  <!-- 날짜 -->
+  <div class="inp-row"><div class="fl">&#xB0A0;&#xC9DC;</div><input class="inp" type="date" id="d-date"></div>
+
+  <!-- 근무 정보 -->
+  <div class="section-label">&#x1F550; &#xADFC;&#xBB34; &#xC815;&#xBCF4;</div>
+  <div class="inp2">
+    <div><div class="fl">&#x1F7E2; &#xC2DC;&#xC791; &#xC2DC;&#xAC04;</div><input class="inp" type="time" id="d-st" oninput="updDaily()"></div>
+    <div><div class="fl">&#x1F534; &#xC885;&#xB8CC; &#xC2DC;&#xAC04;</div><input class="inp" type="time" id="d-et" oninput="updDaily()"></div>
+  </div>
+  <div id="d-hours" style="display:none;font-size:13px;color:#60a5fa;text-align:center;margin-bottom:14px;padding:8px;background:rgba(96,165,250,0.08);border-radius:8px;"></div>
+  <div class="inp-row"><div class="fl">&#x1F5FA;&#xFE0F; &#xCD1D; &#xC6B4;&#xD589;&#xAC70;&#xB9AC;</div>
+    <div style="position:relative;"><input class="inp" type="number" id="d-dist" placeholder="0" style="padding-right:42px;" oninput="updDaily()"><span style="position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:14px;color:#7c8db5;">km</span></div>
+  </div>
+
+  <!-- 배달 실적 -->
+  <div class="section-label">&#x1F4E6; &#xBC30;&#xB2EC; &#xC2E4;&#xC801;</div>
+  <div class="inp2">
+    <div><div class="fl">&#xBC30;&#xB2EC; &#xAC74;&#xC218;</div><input class="inp" type="number" id="d-cnt" placeholder="0" oninput="updDaily()"></div>
+    <div><div class="fl">&#xBC30;&#xB2EC;&#xB8CC;</div><input class="inp" type="number" id="d-fee" placeholder="0" oninput="updDaily()"></div>
+  </div>
+
+  <!-- 추가 수입 -->
+  <div class="section-label">&#x2795; &#xCD94;&#xAC00; &#xC218;&#xC785;</div>
+  <div class="inp2">
+    <div><div class="fl">&#xBBF8;&#xC158; &#xC131;&#xACF5;&#xAE08;&#xC561;</div><input class="inp" type="number" id="d-mission" placeholder="0" oninput="updDaily()"></div>
+    <div><div class="fl">&#xC9C0;&#xC6D0;&#xAE08;</div><input class="inp" type="number" id="d-support" placeholder="0" oninput="updDaily()"></div>
+  </div>
+  <div class="inp-row"><div class="fl">&#xAE30;&#xD0C0; &#xC218;&#xC785;</div><input class="inp" type="number" id="d-other" placeholder="0" oninput="updDaily()"></div>
+
+  <!-- 실시간 계산 미리보기 -->
+  <div id="d-preview" style="display:none;background:rgba(79,142,247,0.08);border:1px solid rgba(79,142,247,0.2);border-radius:12px;padding:14px;margin-bottom:16px;">
+    <div style="font-size:11px;color:#7c8db5;margin-bottom:10px;font-weight:700;">&#x26A1; &#xC2E4;&#xC2DC;&#xAC04; &#xACC4;&#xC0B0;</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px;">
+      <div style="text-align:center;background:rgba(74,222,128,0.08);border-radius:8px;padding:8px;">
+        <div style="font-size:10px;color:#7c8db5;margin-bottom:3px;">&#xCD1D; &#xC218;&#xC785;</div>
+        <div id="dp-total" style="font-size:16px;font-weight:800;color:#4ade80;"></div>
+      </div>
+      <div style="text-align:center;background:rgba(251,191,36,0.08);border-radius:8px;padding:8px;">
+        <div style="font-size:10px;color:#7c8db5;margin-bottom:3px;">&#xD3C9;&#xADE0; &#xC2DC;&#xAE09;</div>
+        <div id="dp-hourly" style="font-size:16px;font-weight:800;color:#fbbf24;"></div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+      <div style="text-align:center;background:rgba(251,146,60,0.08);border-radius:8px;padding:8px;">
+        <div style="font-size:10px;color:#7c8db5;margin-bottom:3px;">&#xAC74;&#xB2F9; &#xB2E8;&#xAC00;</div>
+        <div id="dp-per" style="font-size:13px;font-weight:700;color:#fb923c;"></div>
+      </div>
+      <div style="text-align:center;background:rgba(34,211,238,0.08);border-radius:8px;padding:8px;">
+        <div style="font-size:10px;color:#7c8db5;margin-bottom:3px;">km&#xB2F9;</div>
+        <div id="dp-km" style="font-size:13px;font-weight:700;color:#22d3ee;"></div>
+      </div>
+      <div style="text-align:center;background:rgba(167,139,250,0.08);border-radius:8px;padding:8px;">
+        <div style="font-size:10px;color:#7c8db5;margin-bottom:3px;">&#xC21C; &#xBC30;&#xB2EC;&#xB8CC;</div>
+        <div id="dp-pure" style="font-size:13px;font-weight:700;color:#a78bfa;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 지출 -->
+  <div class="section-label">&#x1F4B8; &#xB2F9;&#xC77C; &#xC9C0;&#xCD9C; (&#xC120;&#xD0DD;)</div>
+  <div class="inp2">
+    <div><div class="fl">&#x26FD; &#xC5F0;&#xB8CC;&#xBE44;</div><input class="inp" type="number" id="d-fuel" placeholder="0"></div>
+    <div><div class="fl">&#x1F37D;&#xFE0F; &#xC2DD;&#xBE44;</div><input class="inp" type="number" id="d-food" placeholder="0"></div>
+  </div>
+  <div class="inp-row"><div class="fl">&#x1F4CB; &#xAE30;&#xD0C0; &#xC9C0;&#xCD9C;</div><input class="inp" type="number" id="d-exp-other" placeholder="0"></div>
+  <div class="inp-row"><div class="fl">&#xBA54;&#xBAA8; (&#xC120;&#xD0DD;)</div><input class="inp" type="text" id="d-memo" placeholder="&#xD2B9;&#xC774;&#xC0AC;&#xD56D; &#xB4F1;"></div>
+
+  <button onclick="saveDaily()" style="width:100%;padding:15px;border-radius:12px;border:none;background:linear-gradient(135deg,#4f8ef7,#7c4dff);color:#fff;font-weight:700;font-size:17px;">&#xC800;&#xC7A5;&#xD558;&#xAE30;</button>
+</div>
+</div>
+
+<!-- MODAL: 목표 설정 -->
+<div class="modal-bg" id="m-goal-set" onclick="if(event.target===this)closeM('m-goal-set')">
+<div class="modal-box">
+  <div class="mh"><div style="width:34px;"></div><div style="font-weight:700;font-size:18px;">&#x1F3AF; &#xBAA9;&#xD45C; &#xC124;&#xC815;</div><button class="mc" onclick="closeM('m-goal-set')">&#x2715;</button></div>
+  <div class="inp-row"><div class="fl">&#x1F4C5; &#xC8FC;&#xAC04; &#xBAA9;&#xD45C; &#xC218;&#xC785;</div><input class="inp" type="number" id="g-weekly" placeholder="0" style="font-size:18px;font-weight:700;"></div>
+  <div class="inp-row" style="margin-bottom:22px;"><div class="fl">&#x1F4C6; &#xC6D4;&#xAC04; &#xBAA9;&#xD45C; &#xC218;&#xC785;</div><input class="inp" type="number" id="g-monthly" placeholder="0" style="font-size:18px;font-weight:700;"></div>
+  <button onclick="saveGoal()" style="width:100%;padding:15px;border-radius:12px;border:none;background:linear-gradient(135deg,#fb923c,#fbbf24);color:#000;font-weight:800;font-size:17px;">&#xBAA9;&#xD45C; &#xC800;&#xC7A5;</button>
+</div>
+</div>
+
+<!-- MODAL: 주간 정산 -->
+<div class="modal-bg" id="m-settle" onclick="if(event.target===this)closeM('m-settle')">
+<div class="modal-box">
+  <div class="mh"><div style="width:34px;"></div><div style="font-weight:700;font-size:18px;">&#x1F3E6; &#xC8FC;&#xAC04; &#xC815;&#xC0B0; &#xB4F1;&#xB85D;</div><button class="mc" onclick="closeM('m-settle')">&#x2715;</button></div>
+  <div id="s-prev" style="display:none;background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.2);border-radius:12px;padding:14px;margin-bottom:14px;"></div>
+  <div class="inp-row"><div class="fl">&#xD50C;&#xB7AB;&#xD3FC;</div><div style="display:flex;gap:8px;flex-wrap:wrap;" id="pl-chips"></div></div>
+  <div class="inp-row">
+    <div class="fl">&#xC815;&#xC0B0; &#xAE30;&#xAC04;</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <div><div style="font-size:12px;color:#4a5568;margin-bottom:4px;">&#xC2DC;&#xC791;&#xC77C;</div><input class="inp" type="date" id="s-ws"></div>
+      <div><div style="font-size:12px;color:#4a5568;margin-bottom:4px;">&#xC885;&#xB8CC;&#xC77C;</div><input class="inp" type="date" id="s-we"></div>
+    </div>
+  </div>
+  <div class="inp-row"><div class="fl">&#xC9C0;&#xAE09;&#xC77C;</div><input class="inp" type="date" id="s-pd"></div>
+  <div class="inp-row"><div class="fl">&#xC138;&#xC804; &#xBC30;&#xB2EC;&#xB8CC;</div><input class="inp" type="number" id="s-gross" placeholder="0" style="font-size:20px;font-weight:700;" oninput="updSP()"></div>
+  <div class="tog-row">
+    <div><div style="font-size:14px;font-weight:600;color:#4f8ef7;">&#xACF5;&#xC81C;&#xC561; &#xC790;&#xB3D9; &#xACC4;&#xC0B0;</div><div style="font-size:12px;color:#7c8db5;margin-top:2px;">&#xC6D0;&#xCC9C;&#xC9D5;&#xC218; 3.3% &middot; &#xC0B0;&#xC7AC; 0.9% &middot; &#xACE0;&#xC6A9; 0.8%</div></div>
+    <button class="sw" id="s-tog" onclick="togAC()" style="background:#4f8ef7;"><div class="kn" id="s-kn" style="left:25px;"></div></button>
+  </div>
+  <div id="s-man" style="display:none;margin-bottom:14px;">
+    <div class="fl">&#xACF5;&#xC81C; &#xD56D;&#xBAA9; &#xC9C1;&#xC811; &#xC785;&#xB825;</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <div><div style="font-size:12px;color:#4a5568;margin-bottom:4px;">&#xC6D0;&#xCC9C;&#xC9D5;&#xC218;&#xC138;&#xC561;</div><input class="inp" type="number" id="s-wh" placeholder="0" oninput="updSP()"></div>
+      <div><div style="font-size:12px;color:#4a5568;margin-bottom:4px;">&#xC0B0;&#xC7AC;&#xBCF4;&#xD5D8;&#xB8CC;</div><input class="inp" type="number" id="s-ind" placeholder="0" oninput="updSP()"></div>
+      <div><div style="font-size:12px;color:#4a5568;margin-bottom:4px;">&#xACE0;&#xC6A9;&#xBCF4;&#xD5D8;&#xB8CC;</div><input class="inp" type="number" id="s-emp" placeholder="0" oninput="updSP()"></div>
+      <div><div style="font-size:12px;color:#4a5568;margin-bottom:4px;">&#xD50C;&#xB7AB;&#xD3FC; &#xC218;&#xC218;&#xB8CC;</div><input class="inp" type="number" id="s-fee" placeholder="0" oninput="updSP()"></div>
+    </div>
+  </div>
+  <div id="s-afee" style="margin-bottom:14px;"><div class="fl">&#xD50C;&#xB7AB;&#xD3FC; &#xC218;&#xC218;&#xB8CC; / &#xAE30;&#xD0C0;</div><input class="inp" type="number" id="s-feeA" placeholder="0" oninput="updSP()"></div>
+  <div class="inp-row" style="margin-bottom:20px;"><div class="fl">&#xBA54;&#xBAA8; (&#xC120;&#xD0DD;)</div><input class="inp" type="text" id="s-memo" placeholder="&#xC815;&#xC0B0; &#xAD00;&#xB828; &#xBA54;&#xBAA8;"></div>
+  <button onclick="saveSettle()" style="width:100%;padding:15px;border-radius:12px;border:none;background:linear-gradient(135deg,#34d399,#60a5fa);color:#000;font-weight:800;font-size:17px;">&#xC800;&#xC7A5;&#xD558;&#xAE30;</button>
+</div>
+</div>
+
+<!-- MODAL: 초기화 -->
+<div class="confirm-bg" id="m-reset">
+<div style="background:#13131f;border:1px solid rgba(248,113,113,0.3);border-radius:20px;padding:28px;width:100%;max-width:340px;text-align:center;">
+  <div style="font-size:40px;margin-bottom:12px;">&#x26A0;&#xFE0F;</div>
+  <div style="font-size:18px;font-weight:700;margin-bottom:8px;">&#xBAA8;&#xB4E0; &#xB370;&#xC774;&#xD130;&#xB97C; &#xCD08;&#xAE30;&#xD654;&#xD560;&#xAE4C;&#xC694;?</div>
+  <div style="font-size:13px;color:#7c8db5;margin-bottom:22px;line-height:1.7;">&#xBAA8;&#xB4E0; &#xB0B4;&#xC5ED;&#xC774; &#xC0AD;&#xC81C;&#xB418;&#xBA70;<br><span style="color:#f87171;font-weight:600;">&#xBCF5;&#xAD6C;&#xD560; &#xC218; &#xC5C6;&#xC5B4;&#xC694;.</span></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+    <button onclick="closeM('m-reset')" style="padding:13px;border-radius:12px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);color:#e8e8f0;font-weight:600;font-size:15px;">&#xCDE8;&#xC18C;</button>
+    <button onclick="resetAll()" style="padding:13px;border-radius:12px;border:none;background:linear-gradient(135deg,#f87171,#fb923c);color:#fff;font-weight:700;font-size:15px;">&#xCD08;&#xAE30;&#xD654;</button>
+  </div>
+</div>
+</div>
+
+<script>
+var MONTHS = ["\uC6D41\uC6D4","\uC6D42\uC6D4","\uC6D43\uC6D4","\uC6D44\uC6D4","\uC6D45\uC6D4","\uC6D46\uC6D4","\uC6D47\uC6D4","\uC6D48\uC6D4","\uC6D49\uC6D4","\uC6D410\uC6D4","\uC6D411\uC6D4","\uC6D412\uC6D4"];
+var PC = {"\uBC30\uB2EC\uC758\uBBFC\uC871":"#60a5fa","\ucfe0\ud321\uc774\uce20":"#f87171","\uc694\uae30\uc694":"#a78bfa","\uAE30\uD0C0":"#34d399"};
+var EXPENSE_CATS = [
+  {id:"fuel",label:"\uC5F0\uB8CC\uBE44",icon:"\u26FD"},
+  {id:"maintenance",label:"\uC218\uB9AC/\uC815\uBE44",icon:"\uD83D\uDD27"},
+  {id:"insurance",label:"\uBCF4\uD5D8\uB8CC",icon:"\uD83D\uDEE1\uFE0F"},
+  {id:"phone",label:"\uD1B5\uC2E0\uBE44",icon:"\uD83D\uDCF1"},
+  {id:"equipment",label:"\uC7A5\uBE44/\uC6A9\uD488",icon:"\uD83C\uDF92"},
+  {id:"parking",label:"\uC8FC\uCC28\uBE44",icon:"\uD83C\uDD7F\uFE0F"},
+  {id:"food",label:"\uC2DD\uBE44",icon:"\uD83C\uDF71"},
+  {id:"other_expense",label:"\uAE30\uD0C0 \uC9C0\uCD9C",icon:"\uD83D\uDCCB"}
+];
+
+var now = new Date(), TY = now.getFullYear(), todayStr = now.toISOString().slice(0,10);
+var curPage = "pg-home", curMonth = now.getMonth();
+var dailyLogs = [], settlements = [];
+var goals = {weekly:0, monthly:0};
+var selPl = "\uBC30\uB2EC\uC758\uBBFC\uC871", autoCalc = true;
+
+function ls(k,v){if(v===undefined){try{var x=localStorage.getItem(k);return x?JSON.parse(x):null;}catch(e){return null;}}else{try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}}
+function loadData(){dailyLogs=ls("rfa_daily")||[];settlements=ls("rfa_settlements")||[];goals=ls("rfa_goals")||{weekly:0,monthly:0};}
+function fmt(n){return new Intl.NumberFormat("ko-KR").format(Math.round(Math.abs(n)))+"\uC6D0";}
+function fmtN(n){return new Intl.NumberFormat("ko-KR").format(Math.round(Math.abs(n)));}
+function calcH(s,e){if(!s||!e)return 0;var sp=s.split(":"),ep=e.split(":");var sv=parseInt(sp[0])*60+parseInt(sp[1]);var ev=parseInt(ep[0])*60+parseInt(ep[1]);if(ev<=sv)ev+=1440;return(ev-sv)/60;}
+function getWS(ds){var d=new Date(ds),day=d.getDay();d.setDate(d.getDate()+(day===0?-6:1-day));return d.toISOString().slice(0,10);}
+function getWE(ws){var d=new Date(ws);d.setDate(d.getDate()+6);return d.toISOString().slice(0,10);}
+function fmtR(s,e){var sd=new Date(s),ed=new Date(e);return(sd.getMonth()+1)+"/"+sd.getDate()+" ~ "+(ed.getMonth()+1)+"/"+ed.getDate();}
+function g(id){return document.getElementById(id);}
+function getWeekIncome(weekStart){
+  var ws=new Date(weekStart), we=new Date(getWE(weekStart));
+  return dailyLogs.filter(function(l){var d=new Date(l.date);return d>=ws&&d<=we;}).reduce(function(s,l){return s+l.totalIncome;},0);
+}
+function getMonthIncome(m){
+  return dailyLogs.filter(function(l){var d=new Date(l.date);return d.getFullYear()===TY&&d.getMonth()===m;}).reduce(function(s,l){return s+l.totalIncome;},0);
+}
+function getStreaks(){
+  var streak=0, ws=getWS(todayStr);
+  for(var i=0;i<12;i++){
+    var d=new Date(ws); d.setDate(d.getDate()-i*7);
+    var wss=d.toISOString().slice(0,10);
+    var inc=getWeekIncome(wss);
+    if(goals.weekly>0&&inc>=goals.weekly) streak++;
+    else if(i>0) break;
+  }
+  return streak;
+}
+function getMotivationMsg(pct){
+  if(pct>=100) return "\uD83C\uDF89 \uBAA9\uD45C \uB2EC\uC131! \uB2F9&#xC2E0;\uC740 \uCD5C&#xACE0;\uC5D0\uC694!";
+  if(pct>=90) return "\uD83D\uDD25 \uAC71\uAE30 \uB2E4 \uC654\uC5B4\uC694! \uC870\uAE08\uB9CC \uB354!";
+  if(pct>=70) return "\uD83D\uDEF5 \uC21C\uD56D \uC911\uC774\uC5D0\uC694! \uACC4\uC18D \uD30C&#xC774;&#xD305;!";
+  if(pct>=50) return "\uD83D\uDCAA \uC808\uBC18\uC740 \uC654\uC5B4\uC694! \uD30C\uC774\uD305!";
+  return "\u26A1 \uC624\uB298\uB3C4 \uD30C&#xC774;&#xD305;! \uD560 \uC218 \uC788&#xC5B4;&#xC694;!";
+}
+
+function goPage(id){document.querySelectorAll(".page").forEach(function(p){p.classList.remove("active");});g(id).classList.add("active");curPage=id;window.scrollTo(0,0);render();}
+function goHome(){goPage("pg-home");}
+function pm(){if(curMonth>0){curMonth--;render();}}
+function nm(){if(curMonth<11){curMonth++;render();}}
+function openM(id){
+  if(id==="m-daily")initDF();
+  else if(id==="m-goal-set"){g("g-weekly").value=goals.weekly||"";g("g-monthly").value=goals.monthly||"";}
+  else if(id==="m-settle")initSF();
+  g(id).classList.add("open");
+}
+function closeM(id){g(id).classList.remove("open");}
+
+// 하루 수입 입력
+function initDF(){
+  g("d-date").value=todayStr;
+  g("d-st").value="09:00"; g("d-et").value="18:00";
+  ["d-dist","d-cnt","d-fee","d-mission","d-support","d-other","d-fuel","d-food","d-exp-other"].forEach(function(id){g(id).value="";});
+  g("d-memo").value="";
+  g("d-preview").style.display="none";
+  g("d-hours").style.display="none";
+}
+function updDaily(){
+  var st=g("d-st").value, et=g("d-et").value;
+  var h=calcH(st,et);
+  var hd=g("d-hours");
+  if(h>0){hd.style.display="block";hd.textContent="\uCD1D \uADFC\uBB34\uC2DC\uAC04: "+h.toFixed(1)+"\uC2DC\uAC04";}
+  else hd.style.display="none";
+  var fee=parseInt(g("d-fee").value)||0;
+  var mission=parseInt(g("d-mission").value)||0;
+  var support=parseInt(g("d-support").value)||0;
+  var other=parseInt(g("d-other").value)||0;
+  var total=fee+mission+support+other;
+  var cnt=parseInt(g("d-cnt").value)||0;
+  var dist=parseFloat(g("d-dist").value)||0;
+  if(total>0){
+    g("d-preview").style.display="block";
+    g("dp-total").textContent=fmt(total);
+    g("dp-hourly").textContent=h>0?fmt(total/h):"-";
+    g("dp-per").textContent=cnt>0?fmt(fee/cnt):"-";
+    g("dp-km").textContent=dist>0?fmt(total/dist):"-";
+    g("dp-pure").textContent=cnt>0?fmt(fee/cnt):"-";
+  } else g("d-preview").style.display="none";
+}
+function saveDaily(){
+  var date=g("d-date").value;
+  var st=g("d-st").value, et=g("d-et").value;
+  var dist=parseFloat(g("d-dist").value)||0;
+  var cnt=parseInt(g("d-cnt").value)||0;
+  var fee=parseInt(g("d-fee").value)||0;
+  var mission=parseInt(g("d-mission").value)||0;
+  var support=parseInt(g("d-support").value)||0;
+  var other=parseInt(g("d-other").value)||0;
+  var fuel=parseInt(g("d-fuel").value)||0;
+  var food=parseInt(g("d-food").value)||0;
+  var expOther=parseInt(g("d-exp-other").value)||0;
+  var memo=g("d-memo").value;
+  if(!date){alert("\uB0A0\uC9DC\uB97C \uC785\uB825\uD574\uC8FC\uC138\uC694.");return;}
+  var totalIncome=fee+mission+support+other;
+  var totalExpense=fuel+food+expOther;
+  var log={id:Date.now(),date:date,startTime:st,endTime:et,distance:dist,deliveryCount:cnt,deliveryFee:fee,missionAmount:mission,supportAmount:support,otherIncome:other,totalIncome:totalIncome,fuelExpense:fuel,foodExpense:food,otherExpense:expOther,totalExpense:totalExpense,memo:memo};
+  dailyLogs.push(log);
+  ls("rfa_daily",dailyLogs);
+  closeM("m-daily");
+  render();
+}
+
+// 목표 설정
+function saveGoal(){
+  goals.weekly=parseInt(g("g-weekly").value)||0;
+  goals.monthly=parseInt(g("g-monthly").value)||0;
+  ls("rfa_goals",goals);
+  closeM("m-goal-set");
+  render();
+}
+
+// 정산
+function initSF(){
+  var ws=getWS(todayStr);
+  g("s-ws").value=ws; g("s-we").value=getWE(ws); g("s-pd").value=todayStr;
+  ["s-gross","s-wh","s-ind","s-emp","s-fee","s-feeA","s-memo"].forEach(function(id){g(id).value="";});
+  selPl="\uBC30\uB2EC\uC758\uBBFC\uC871"; autoCalc=true; renderPL();
+  g("s-tog").style.background="#4f8ef7"; g("s-kn").style.left="25px";
+  g("s-man").style.display="none"; g("s-afee").style.display="block"; g("s-prev").style.display="none";
+}
+function renderPL(){
+  var html="";
+  ["\uBC30\uB2EC\uC758\uBBFC\uC871","\ucfe0\ud321\uc774\uce20","\uc694\uae30\uc694","\uAE30\uD0C0"].forEach(function(p){
+    var c=PC[p]||"#34d399",on=p===selPl;
+    html+='<button class="chip'+(on?" on":"")+'" onclick="selPl=\''+p+'\';renderPL();" style="'+(on?'border-color:'+c+';background:'+c+'22;color:'+c+';':'')+' font-weight:'+(on?700:400)+'">'+p+'</button>';
+  });
+  g("pl-chips").innerHTML=html;
+}
+function togAC(){
+  autoCalc=!autoCalc;
+  g("s-tog").style.background=autoCalc?"#4f8ef7":"#2a2a3d";
+  g("s-kn").style.left=autoCalc?"25px":"3px";
+  g("s-man").style.display=autoCalc?"none":"block";
+  g("s-afee").style.display=autoCalc?"block":"none";
+  updSP();
+}
+function getSD(){
+  var gross=parseInt(g("s-gross").value)||0,wh,ind,emp,fee,oth=0;
+  if(autoCalc){wh=Math.round(gross*0.033);ind=Math.round(gross*0.009);emp=Math.round(gross*0.008);fee=parseInt(g("s-feeA").value)||0;}
+  else{wh=parseInt(g("s-wh").value)||0;ind=parseInt(g("s-ind").value)||0;emp=parseInt(g("s-emp").value)||0;fee=parseInt(g("s-fee").value)||0;}
+  return{gross:gross,wh:wh,ind:ind,emp:emp,fee:fee,oth:oth,net:gross-(wh+ind+emp+fee+oth)};
+}
+function updSP(){
+  var d=getSD(),prev=g("s-prev");
+  if(!d.gross){prev.style.display="none";return;}
+  var items=[{l:"\uC6D0\uCC9C\uC9D5\uC218(3.3%)",v:d.wh,c:"#f87171"},{l:"\uC0B0\uC7AC\uBCF4\uD5D8\uB8CC",v:d.ind,c:"#fb923c"},{l:"\uACE0\uC6A9\uBCF4\uD5D8\uB8CC",v:d.emp,c:"#fbbf24"},{l:"\uC218\uC218\uB8CC",v:d.fee,c:"#a78bfa"}].filter(function(i){return i.v>0;});
+  var html='<div style="font-size:11px;color:#7c8db5;margin-bottom:10px;font-weight:700;">\uC2E4&#xC2DC;&#xAC04; \uACC4&#xC0B0; \uACB0&#xACFC;</div>';
+  html+='<div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span style="color:#a0aec0;">\uC138\uC804 \uBC30\uB2EC\uB8CC</span><span style="color:#34d399;font-weight:600;">'+fmt(d.gross)+'</span></div>';
+  items.forEach(function(i){html+='<div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span style="color:#6b7a99;">- '+i.l+'</span><span style="color:'+i.c+';">- '+fmt(i.v)+'</span></div>';});
+  html+='<div style="height:1px;background:rgba(255,255,255,0.08);margin:10px 0;"></div>';
+  html+='<div style="display:flex;justify-content:space-between;font-size:16px;font-weight:800;"><span>\uC2E4\uC218\uB839\uC561</span><span style="color:#60a5fa;">'+fmt(d.net)+'</span></div>';
+  prev.style.display="block"; prev.innerHTML=html;
+}
+function saveSettle(){
+  var d=getSD(),pd=g("s-pd").value,ws=g("s-ws").value,we=g("s-we").value,memo=g("s-memo").value;
+  if(!d.gross||!pd){alert("\uC138\uC804 \uBC30\uB2EC\uB8CC\uC640 \uC9C0\uAE09\uC77C\uC744 \uC785\uB825\uD574\uC8FC\uC138\uC694.");return;}
+  settlements.push({id:Date.now(),platform:selPl,paymentDate:pd,weekStart:ws,weekEnd:we,grossAmount:d.gross,withholdingTax:d.wh,industrialInsurance:d.ind,employmentInsurance:d.emp,platformFee:d.fee,otherDeduction:d.oth,netAmount:d.net,memo:memo});
+  ls("rfa_settlements",settlements);closeM("m-settle");render();
+}
+
+function resetAll(){
+  dailyLogs=[];settlements=[];goals={weekly:0,monthly:0};
+  ls("rfa_daily",[]);ls("rfa_settlements",[]);ls("rfa_goals",goals);
+  closeM("m-reset");render();
+}
+
+function download(){
+  var yL=dailyLogs.filter(function(l){return new Date(l.date).getFullYear()===TY;});
+  var yInc=yL.reduce(function(s,l){return s+l.totalIncome;},0);
+  var yExp=yL.reduce(function(s,l){return s+l.totalExpense;},0);
+  var yNet=yInc-yExp;
+  var yS=settlements.filter(function(s){return new Date(s.paymentDate).getFullYear()===TY;});
+  var yWH=yS.reduce(function(s,r){return s+r.withholdingTax;},0);
+  var taxable=Math.max(0,yNet-1500000);
+  var gTax=taxable<=12000000?taxable*0.06:taxable<=46000000?720000+(taxable-12000000)*0.15:5820000+(taxable-46000000)*0.24;
+  var lines=[TY+"\uB144 \uB77C\uC774\uB354 \uC138\uAE08\uC2E0\uACE0 \uC790\uB8CC","","\uCD1D \uC218\uC785: "+fmt(yInc),"\uCD1D \uC9C0\uCD9C: "+fmt(yExp),"\uC21C\uC218\uC775: "+fmt(yNet),"","\uAE30\uB098\uBD80 \uC6D0\uCC9C\uC9D5\uC218: "+fmt(yWH),"\uACFC\uC138\uD45C\uC900: "+fmt(taxable),"\uC885\uD569\uC18C\uB4DD\uC138: "+fmt(gTax),"\uCD94\uAC00\uB099\uBD80: "+fmt(Math.max(0,gTax-yWH)),"","\uCC38\uACE0\uC6A9 \uC790\uB8CC\uC785\uB2C8\uB2E4."];
+  var blob=new Blob([lines.join("\n")],{type:"text/plain;charset=utf-8"});
+  var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="\uB77C\uC774\uB354\uC138\uAE08\uC790\uB8CC_"+TY+".txt";a.click();
+}
+
+function mLogs(){return dailyLogs.filter(function(l){var d=new Date(l.date);return d.getFullYear()===TY&&d.getMonth()===curMonth;}).sort(function(a,b){return b.date.localeCompare(a.date);});}
+
+function render(){
+  if(curPage==="pg-home")renderHome();
+  else if(curPage==="pg-goal")renderGoal();
+  else if(curPage==="pg-work")renderWork();
+  else if(curPage==="pg-settle")renderSettle();
+  else if(curPage==="pg-tax")renderTax();
+}
+
+function renderHome(){
+  var logs=mLogs();
+  var inc=logs.reduce(function(s,l){return s+l.totalIncome;},0);
+  var exp=logs.reduce(function(s,l){return s+l.totalExpense;},0);
+  var net=inc-exp;
+  g("home-ml").textContent=TY+"\uB144 "+MONTHS[curMonth]+" \uD604\uD669";
+  g("h-inc").textContent=fmt(inc);
+  g("h-exp").textContent=fmt(exp);
+  g("h-net").textContent=fmt(net);
+  g("h-net").style.color=net>=0?"#60a5fa":"#fb923c";
+
+  // 차트
+  var yd=[],maxV=1;
+  for(var m=0;m<12;m++){
+    var r=dailyLogs.filter(function(l){return new Date(l.date).getMonth()===m&&new Date(l.date).getFullYear()===TY;});
+    var i=r.reduce(function(s,l){return s+l.totalIncome;},0);
+    var e=r.reduce(function(s,l){return s+l.totalExpense;},0);
+    yd.push({inc:i,exp:e});if(i>maxV)maxV=i;
+  }
+  var ch="";
+  for(var m=0;m<12;m++){
+    var d=yd[m],act=m===curMonth;
+    ch+='<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;" onclick="curMonth='+m+';renderHome();">';
+    ch+='<div style="width:100%;display:flex;flex-direction:column;justify-content:flex-end;height:50px;gap:1px;">';
+    ch+='<div style="height:'+Math.max(d.inc>0?(d.inc/maxV)*38:0,d.inc>0?3:0)+'px;background:'+(act?"#4f8ef7":"#1e3a5f")+';border-radius:3px 3px 0 0;"></div>';
+    ch+='<div style="height:'+Math.max(d.exp>0?(d.exp/maxV)*38:0,d.exp>0?3:0)+'px;background:'+(act?"#f87171":"#3d1a1a")+';border-radius:3px 3px 0 0;"></div>';
+    ch+='</div><div style="font-size:9px;color:'+(act?"#e8e8f0":"#3a4060")+'">'+(m+1)+'\uC6D4</div></div>';
+  }
+  g("h-chart").innerHTML=ch;
+
+  // 최근 내역
+  var recent=dailyLogs.slice().sort(function(a,b){return b.date.localeCompare(a.date);}).slice(0,3);
+  var el=g("h-recent");
+  if(!recent.length){el.innerHTML='<div style="color:#3a4060;text-align:center;padding:16px 0;font-size:13px;">\uC218&#xC785; \uB0B4&#xC5ED;\uC774 \uC5C6\uC5B4\uC694</div>';return;}
+  var html="";
+  recent.forEach(function(l){
+    html+='<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);">';
+    html+='<div><div style="font-size:14px;font-weight:600;margin-bottom:2px;">'+l.date+'</div>';
+    html+='<div style="font-size:12px;color:#4a5568;">'+l.deliveryCount+'\uAC74 &middot; '+calcH(l.startTime,l.endTime).toFixed(1)+'h</div></div>';
+    html+='<div style="text-align:right;"><div style="font-size:15px;font-weight:700;color:#4ade80;">'+fmt(l.totalIncome)+'</div>';
+    if(l.totalExpense>0)html+='<div style="font-size:11px;color:#f87171;">-'+fmt(l.totalExpense)+'</div>';
+    html+='</div></div>';
+  });
+  el.innerHTML=html;
+}
+
+function renderGoal(){
+  var el=g("goal-content");
+  // 이번 주
+  var thisWS=getWS(todayStr);
+  var weekInc=getWeekIncome(thisWS);
+  var weekPct=goals.weekly>0?Math.min(Math.round((weekInc/goals.weekly)*100),100):0;
+  var weekRemain=goals.weekly>0?Math.max(goals.weekly-weekInc,0):0;
+  // 이번 달
+  var monthInc=getMonthIncome(curMonth);
+  var monthPct=goals.monthly>0?Math.min(Math.round((monthInc/goals.monthly)*100),100):0;
+  var monthRemain=goals.monthly>0?Math.max(goals.monthly-monthInc,0):0;
+  // 스트릭
+  var streak=getStreaks();
+
+  if(!goals.weekly&&!goals.monthly){
+    el.innerHTML='<div class="empty"><div style="font-size:48px;margin-bottom:12px;">&#x1F3AF;</div><div style="font-size:17px;font-weight:600;margin-bottom:8px;">\uBAA9\uD45C\uB97C \uC124\uC815\uD574\uBCF4\uC138\uC694!</div><div style="font-size:13px;color:#4a5568;margin-bottom:20px;line-height:1.6;">\uC8FC&#xAC04;/\uC6D4\uAC04 \uBAA9\uD45C\uB97C \uC124\uC815\uD558\uBA74<br>\uB2EC\uC131\uB960\uC744 \uD655\uC778\uD560 \uC218 \uC788\uC5B4\uC694</div><button onclick="openM(\'m-goal-set\')" style="background:linear-gradient(135deg,#fb923c,#fbbf24);border:none;border-radius:22px;padding:11px 26px;color:#000;font-weight:700;font-size:15px;">\uBAA9\uD45C \uC124\uC815\uD558\uAE30</button></div>';
+    return;
+  }
+
+  var html="";
+
+  // 스트릭
+  if(streak>0){
+    html+='<div style="text-align:center;margin-bottom:16px;">';
+    html+='<span class="streak-badge">&#x1F525; '+streak+'\uC8FC \uC5F0\uC18D \uBAA9\uD45C \uB2EC\uC131 \uC911!</span></div>';
+  }
+
+  // 주간 목표
+  if(goals.weekly>0){
+    var wMsg=weekPct>=100?"\uD83C\uDF89 \uC774\uBC88 \uC8FC \uBAA9\uD45C \uB2EC\uC131! "+fmt(weekInc-goals.weekly)+" \uCD08\uACFC!":"\uD83D\uDE80 "+fmt(weekRemain)+"\uB9CC \uB354\uBA74 \uC774\uBC88 \uC8FC \uB2EC\uC131!";
+    html+='<div class="goal-card" style="background:linear-gradient(135deg,rgba(79,142,247,0.12),rgba(124,77,255,0.12));border:1px solid rgba(79,142,247,0.25);">';
+    html+='<div style="font-size:12px;color:#7c8db5;margin-bottom:8px;font-weight:700;">&#x1F4C5; \uC774\uBC88 \uC8FC \uBAA9\uD45C</div>';
+    html+='<div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:12px;">';
+    html+='<div><div style="font-size:26px;font-weight:900;color:#4f8ef7;">'+fmt(weekInc)+'</div><div style="font-size:12px;color:#7c8db5;">/ '+fmt(goals.weekly)+'</div></div>';
+    html+='<div style="font-size:28px;font-weight:900;color:'+(weekPct>=100?"#4ade80":"#4f8ef7")+';">'+weekPct+'%</div></div>';
+    html+='<div style="height:10px;background:rgba(255,255,255,0.06);border-radius:5px;overflow:hidden;margin-bottom:12px;">';
+    html+='<div style="height:100%;width:'+weekPct+'%;background:linear-gradient(90deg,#4f8ef7,#7c4dff);border-radius:5px;transition:width 0.5s;"></div></div>';
+    html+='<div style="font-size:14px;font-weight:700;color:'+(weekPct>=100?"#4ade80":"#e8e8f0")+';">'+wMsg+'</div>';
+    html+='<div style="font-size:12px;color:#4a5568;margin-top:4px;">'+getMotivationMsg(weekPct)+'</div></div>';
+  }
+
+  // 월간 목표
+  if(goals.monthly>0){
+    var mMsg=monthPct>=100?"\uD83C\uDFC6 \uC774\uB2EC \uBAA9\uD45C \uB2EC\uC131! "+fmt(monthInc-goals.monthly)+" \uCD08\uACFC!":"\uD83D\uDCAA "+fmt(monthRemain)+"\uB9CC \uB354\uBA74 \uC774\uB2EC \uB2EC\uC131!";
+    html+='<div class="goal-card" style="background:linear-gradient(135deg,rgba(251,146,60,0.12),rgba(251,191,36,0.12));border:1px solid rgba(251,146,60,0.25);">';
+    html+='<div style="font-size:12px;color:#7c8db5;margin-bottom:8px;font-weight:700;">&#x1F4C6; '+MONTHS[curMonth]+' \uBAA9\uD45C</div>';
+    html+='<div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:12px;">';
+    html+='<div><div style="font-size:26px;font-weight:900;color:#fb923c;">'+fmt(monthInc)+'</div><div style="font-size:12px;color:#7c8db5;">/ '+fmt(goals.monthly)+'</div></div>';
+    html+='<div style="font-size:28px;font-weight:900;color:'+(monthPct>=100?"#4ade80":"#fb923c")+';">'+monthPct+'%</div></div>';
+    html+='<div style="height:10px;background:rgba(255,255,255,0.06);border-radius:5px;overflow:hidden;margin-bottom:12px;">';
+    html+='<div style="height:100%;width:'+monthPct+'%;background:linear-gradient(90deg,#fb923c,#fbbf24);border-radius:5px;transition:width 0.5s;"></div></div>';
+    html+='<div style="font-size:14px;font-weight:700;color:'+(monthPct>=100?"#4ade80":"#e8e8f0")+';">'+mMsg+'</div>';
+    html+='<div style="font-size:12px;color:#4a5568;margin-top:4px;">'+getMotivationMsg(monthPct)+'</div></div>';
+  }
+
+  // 월간 일별 현황
+  var logs=mLogs();
+  if(logs.length>0){
+    html+='<div class="card"><div class="card-title">'+MONTHS[curMonth]+' \uC77C\uBCC4 \uD604\uD669</div>';
+    logs.forEach(function(l){
+      var h=calcH(l.startTime,l.endTime);
+      html+='<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);">';
+      html+='<div><div style="font-size:14px;font-weight:600;">'+l.date+'</div>';
+      html+='<div style="font-size:12px;color:#4a5568;">'+l.deliveryCount+'\uAC74 &middot; '+h.toFixed(1)+'h &middot; '+l.distance+'km</div></div>';
+      html+='<div style="text-align:right;"><div style="font-size:15px;font-weight:700;color:#4ade80;">'+fmt(l.totalIncome)+'</div>';
+      if(l.totalExpense>0)html+='<div style="font-size:11px;color:#f87171;">-'+fmt(l.totalExpense)+'</div>';
+      html+='</div></div>';
+    });
+    html+='</div>';
+  }
+
+  el.innerHTML=html;
+}
+
+function renderWork(){
+  g("w-ml").textContent=TY+"\uB144 "+MONTHS[curMonth];
+  var logs=mLogs();
+  var el=g("w-content");
+  if(!logs.length){el.innerHTML='<div class="empty"><div style="font-size:48px;margin-bottom:12px;">&#x23F1;&#xFE0F;</div><div style="font-size:17px;font-weight:600;margin-bottom:8px;">\uADFC\uBB34 \uAE30\uB85D\uC774 \uC5C6\uC5B4\uC694</div><div style="font-size:13px;color:#4a5568;margin-bottom:20px;">\uD648 \uD654\uBA74\uC5D0\uC11C \uD558\uB8E8 \uC218\uC785\uC744 \uC785\uB825\uD574\uC8FC\uC138\uC694</div></div>';return;}
+  var th=0,tInc=0,tFee=0,tCnt=0,dist=0;
+  logs.forEach(function(l){th+=calcH(l.startTime,l.endTime);tInc+=l.totalIncome;tFee+=l.deliveryFee;tCnt+=l.deliveryCount;dist+=l.distance||0;});
+  var dwd=logs.filter(function(l){return l.distance>0;}).length;
+  var hourly=th>0?tInc/th:0, perDel=tCnt>0?tFee/tCnt:0;
+  var td={morning:0,afternoon:0,evening:0,night:0};
+  logs.forEach(function(l){var h=parseInt((l.startTime||"0:0").split(":")[0]);if(h>=6&&h<11)td.morning++;else if(h>=11&&h<16)td.afternoon++;else if(h>=16&&h<21)td.evening++;else td.night++;});
+
+  var html='<div style="background:linear-gradient(135deg,rgba(250,204,21,0.12),rgba(251,146,60,0.12));border:1px solid rgba(250,204,21,0.2);border-radius:16px;padding:18px;margin-bottom:14px;">';
+  html+='<div style="font-size:11px;color:#7c8db5;margin-bottom:12px;font-weight:700;">\u26A1 \uC774\uB2EC\uC758 \uD575\uC2EC \uC9C0\uD45C</div>';
+  html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">';
+  html+='<div><div style="font-size:11px;color:#fbbf24;margin-bottom:3px;">\uD3C9\uADE0 \uC2DC\uAE09</div><div style="font-size:26px;font-weight:900;color:#fbbf24;line-height:1;">'+fmtN(hourly)+'</div><div style="font-size:11px;color:#7c8db5;">\uC6D0/\uC2DC\uAC04</div></div>';
+  html+='<div><div style="font-size:11px;color:#fb923c;margin-bottom:3px;">\uAC74\uB2F9 \uC21C\uBC30\uB2EC\uB8CC</div><div style="font-size:26px;font-weight:900;color:#fb923c;line-height:1;">'+fmtN(perDel)+'</div><div style="font-size:11px;color:#7c8db5;">\uC6D0/\uAC74</div></div></div>';
+  html+='<div style="padding:10px;background:rgba(0,0,0,0.3);border-radius:8px;">';
+  html+='<div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:#7c8db5;">2025\uB144 \uCD5C\uC800\uC2DC\uAE09(10,030\uC6D0) \uB300\uBE44</span><span style="font-weight:700;color:'+(hourly>=10030?"#4ade80":"#f87171")+';">'+(hourly>=10030?"&#x25B2; ":"&#x25BC; ")+fmt(Math.abs(hourly-10030))+'</span></div></div></div>';
+
+  html+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;">';
+  [{icon:"&#x1F4C5;",label:"\uADFC\uBB34\uC77C\uC218",val:logs.length+"\uC77C",color:"#60a5fa",sub:""},{icon:"&#x23F0;",label:"\uCD1D \uADFC\uBB34\uC2DC\uAC04",val:th.toFixed(1)+"h",color:"#a78bfa",sub:"\uC77C\uD3C9\uADE0 "+(th/logs.length).toFixed(1)+"h"},{icon:"&#x1F4E6;",label:"\uCD1D \uBC30\uB2EC\uAC74\uC218",val:tCnt+"\uAC74",color:"#34d399",sub:"\uC77C\uD3C9\uADE0 "+(tCnt/logs.length).toFixed(1)+"\uAC74"}].forEach(function(b){
+    html+='<div style="background:'+b.color+'11;border:1px solid '+b.color+'30;border-radius:12px;padding:12px 8px;text-align:center;"><div style="font-size:18px;margin-bottom:3px;">'+b.icon+'</div><div style="font-size:10px;color:#7c8db5;margin-bottom:3px;">'+b.label+'</div><div style="font-size:13px;font-weight:800;color:'+b.color+';">'+b.val+'</div>'+(b.sub?'<div style="font-size:10px;color:#4a5568;margin-top:2px;">'+b.sub+'</div>':'')+'</div>';
+  });
+  html+='</div>';
+
+  if(dwd>0){
+    html+='<div style="background:rgba(34,211,238,0.08);border:1px solid rgba(34,211,238,0.2);border-radius:14px;padding:14px;margin-bottom:14px;">';
+    html+='<div style="font-size:11px;color:#7c8db5;margin-bottom:10px;font-weight:700;">&#x1F5FA;&#xFE0F; \uC6B4\uD589\uAC70\uB9AC \uBD84\uC11D</div>';
+    html+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">';
+    html+='<div style="text-align:center;"><div style="font-size:10px;color:#22d3ee;margin-bottom:3px;">\uCD1D \uC6B4\uD589\uAC70\uB9AC</div><div style="font-size:18px;font-weight:900;color:#22d3ee;">'+dist.toFixed(0)+'</div><div style="font-size:10px;color:#7c8db5;">km</div></div>';
+    html+='<div style="text-align:center;"><div style="font-size:10px;color:#a78bfa;margin-bottom:3px;">km\uB2F9 \uC218\uC785</div><div style="font-size:18px;font-weight:900;color:#a78bfa;">'+(dist>0?fmtN(tInc/dist):"0")+'</div><div style="font-size:10px;color:#7c8db5;">\uC6D0/km</div></div>';
+    html+='<div style="text-align:center;"><div style="font-size:10px;color:#34d399;margin-bottom:3px;">\uAC74\uB2F9 \uD3C9\uADE0\uAC70\uB9AC</div><div style="font-size:18px;font-weight:900;color:#34d399;">'+(dist>0&&tCnt>0?(dist/tCnt).toFixed(1):"0")+'</div><div style="font-size:10px;color:#7c8db5;">km/\uAC74</div></div></div></div>';
+  }
+
+  html+='<div class="card"><div class="card-title">\uCD9C\uADFC \uC2DC\uAC04\uB300 \uBD84\uD3EC</div>';
+  [{key:"morning",label:"\uC624\uC804(06~11\uC2DC)",color:"#fbbf24"},{key:"afternoon",label:"\uC810\uC2EC(11~16\uC2DC)",color:"#fb923c"},{key:"evening",label:"\uC800\uB141(16~21\uC2DC)",color:"#60a5fa"},{key:"night",label:"\uC2EC\uC57C(21~06\uC2DC)",color:"#a78bfa"}].forEach(function(s){
+    html+='<div style="margin-bottom:12px;"><div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:14px;"><span style="color:#a0aec0;">'+s.label+'</span><span style="color:'+s.color+';font-weight:600;">'+td[s.key]+'\uC77C</span></div>';
+    html+='<div style="height:6px;background:#1e2030;border-radius:3px;"><div style="height:100%;width:'+(logs.length>0?(td[s.key]/logs.length)*100:0)+'%;background:'+s.color+';border-radius:3px;"></div></div></div>';
+  });
+  html+='</div>';
+
+  html+='<div class="card"><div class="card-title">\uC77C\uBCC4 \uC218\uC785 \uB0B4\uC5ED</div>';
+  logs.forEach(function(l){
+    var h=calcH(l.startTime,l.endTime);
+    html+='<div class="wc">';
+    html+='<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">';
+    html+='<div><div style="font-weight:700;font-size:15px;margin-bottom:2px;">'+l.date+'</div>';
+    html+='<div style="font-size:12px;color:#6b7a99;">'+l.startTime+' ~ '+l.endTime+' ('+h.toFixed(1)+'h) &middot; '+l.deliveryCount+'\uAC74</div></div>';
+    html+='<div style="text-align:right;"><div style="font-weight:700;color:#4ade80;font-size:15px;">'+fmt(l.totalIncome)+'</div>';
+    if(l.totalExpense>0)html+='<div style="font-size:11px;color:#f87171;">-'+fmt(l.totalExpense)+'</div>';
+    html+='</div></div>';
+    html+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;margin-bottom:8px;">';
+    html+='<div style="background:rgba(251,191,36,0.08);border-radius:8px;padding:6px;text-align:center;"><div style="font-size:10px;color:#7c8db5;margin-bottom:2px;">\uC2DC\uAE09</div><div style="font-size:12px;font-weight:700;color:#fbbf24;">'+(h>0?fmt(l.totalIncome/h):"-")+'</div></div>';
+    html+='<div style="background:rgba(251,146,60,0.08);border-radius:8px;padding:6px;text-align:center;"><div style="font-size:10px;color:#7c8db5;margin-bottom:2px;">\uC21C\uBC30\uB2EC\uB8CC</div><div style="font-size:12px;font-weight:700;color:#fb923c;">'+(l.deliveryCount>0?fmt(l.deliveryFee/l.deliveryCount):"-")+'</div></div>';
+    html+='<div style="background:rgba(34,211,238,0.08);border-radius:8px;padding:6px;text-align:center;"><div style="font-size:10px;color:#7c8db5;margin-bottom:2px;">km\uB2F9</div><div style="font-size:12px;font-weight:700;color:#22d3ee;">'+(l.distance>0?fmt(l.totalIncome/l.distance):"-")+'</div></div>';
+    html+='<div style="background:rgba(167,139,250,0.08);border-radius:8px;padding:6px;text-align:center;"><div style="font-size:10px;color:#7c8db5;margin-bottom:2px;">\uBBF8\uC158+\uC9C0\uC6D0&#xAE08;;</div><div style="font-size:12px;font-weight:700;color:#a78bfa;">'+fmt((l.missionAmount||0)+(l.supportAmount||0))+'</div></div>';
+    html+='</div>';
+    if(l.distance>0)html+='<div style="font-size:12px;color:#4a5568;margin-bottom:6px;">\uC6B4\uD589 '+l.distance+'km &middot; \uAC74\uB2F9 '+(l.deliveryCount>0?(l.distance/l.deliveryCount).toFixed(1):"-")+'km</div>';
+    html+='<button onclick="delLog('+l.id+')" style="background:none;border:none;color:#3d4460;font-size:12px;padding:0;">\uC0AD\uC81C</button></div>';
+  });
+  html+='</div>';
+  el.innerHTML=html;
+}
+function delLog(id){dailyLogs=dailyLogs.filter(function(x){return x.id!==id;});ls("rfa_daily",dailyLogs);render();}
+
+function renderSettle(){
+  g("s-ml").textContent=TY+"\uB144 "+MONTHS[curMonth];
+  var mS=settlements.filter(function(s){var d=new Date(s.paymentDate);return d.getFullYear()===TY&&d.getMonth()===curMonth;}).sort(function(a,b){return b.paymentDate.localeCompare(a.paymentDate);});
+  var el=g("s-content");
+  if(!mS.length){el.innerHTML='<div class="empty"><div style="font-size:48px;margin-bottom:12px;">&#x1F3E6;</div><div style="font-size:17px;font-weight:600;margin-bottom:8px;">\uC774\uB2EC \uC815\uC0B0 \uB0B4\uC5ED\uC774 \uC5C6\uC5B4\uC694</div><button onclick="openM(\'m-settle\')" style="background:linear-gradient(135deg,#34d399,#60a5fa);border:none;border-radius:22px;padding:11px 26px;color:#000;font-weight:700;font-size:15px;">+ \uCCAB \uC815\uC0B0 \uB4F1\uB85D\uD558\uAE30</button></div>';return;}
+  var gross=0,wh=0,ind=0,emp=0,fee=0,net=0;
+  mS.forEach(function(s){gross+=s.grossAmount;wh+=s.withholdingTax;ind+=s.industrialInsurance;emp+=s.employmentInsurance;fee+=s.platformFee;net+=s.netAmount;});
+  var td=wh+ind+emp+fee,dp=gross>0?((td/gross)*100).toFixed(1):0;
+  var html='<div style="background:linear-gradient(135deg,rgba(52,211,153,0.12),rgba(96,165,250,0.12));border:1px solid rgba(52,211,153,0.25);border-radius:16px;padding:18px;margin-bottom:14px;">';
+  html+='<div style="font-size:11px;color:#7c8db5;margin-bottom:10px;font-weight:700;">\uC774\uB2EC \uD50C\uB7AB\uD3FC \uC815\uC0B0 \uC694\uC57D ('+mS.length+'\uD68C)</div>';
+  html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">';
+  html+='<div><div style="font-size:11px;color:#34d399;margin-bottom:3px;">\uC138\uC804 \uBC30\uB2EC\uB8CC</div><div style="font-size:20px;font-weight:900;color:#34d399;">'+fmt(gross)+'</div></div>';
+  html+='<div><div style="font-size:11px;color:#60a5fa;margin-bottom:3px;">\uC2E4\uC218\uB839\uC561</div><div style="font-size:20px;font-weight:900;color:#60a5fa;">'+fmt(net)+'</div></div></div>';
+  html+='<div style="background:rgba(0,0,0,0.3);border-radius:8px;padding:10px;">';
+  html+='<div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px;"><span style="color:#7c8db5;">\uCD1D \uACF5\uC81C\uC561</span><span style="color:#f87171;font-weight:700;">- '+fmt(td)+'</span></div>';
+  html+='<div style="height:6px;background:#1e2030;border-radius:3px;overflow:hidden;"><div style="height:100%;width:'+dp+'%;background:linear-gradient(90deg,#f87171,#fb923c);border-radius:3px;"></div></div>';
+  html+='<div style="font-size:11px;color:#4a5568;margin-top:4px;text-align:right;">\uACF5\uC81C\uC728 '+dp+'%</div></div></div>';
+  html+='<div class="card">';
+  [{l:"\uC6D0\uCC9C\uC9D5\uC218\uC138\uC561 (3.3%)",v:wh,c:"#f87171"},{l:"\uC0B0\uC7AC\uBCF4\uD5D8\uB8CC",v:ind,c:"#fb923c"},{l:"\uACE0\uC6A9\uBCF4\uD5D8\uB8CC",v:emp,c:"#fbbf24"},{l:"\uD50C\uB7AB\uD3FC \uC218\uC218\uB8CC",v:fee,c:"#a78bfa"}].forEach(function(i){if(i.v>0)html+='<div style="display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:14px;"><span style="color:#a0aec0;">'+i.l+'</span><span style="color:'+i.c+';font-weight:600;">- '+fmt(i.v)+'</span></div>';});
+  html+='<div style="display:flex;justify-content:space-between;padding-top:10px;font-size:15px;font-weight:700;"><span>\uD569\uACC4</span><span style="color:#f87171;">- '+fmt(td)+'</span></div></div>';
+  mS.forEach(function(s){
+    var pc=PC[s.platform]||"#34d399";
+    var std=s.withholdingTax+s.industrialInsurance+s.employmentInsurance+s.platformFee;
+    var uid="sc"+s.id;
+    html+='<div class="sc"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">';
+    html+='<div><div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;"><span style="font-size:12px;font-weight:700;padding:3px 10px;border-radius:10px;background:'+pc+'22;color:'+pc+';border:1px solid '+pc+'44;">'+s.platform+'</span><span style="font-size:12px;color:#7c8db5;">'+fmtR(s.weekStart,s.weekEnd)+'</span></div>';
+    html+='<div style="font-size:12px;color:#4a5568;">\uC9C0\uAE09\uC77C: '+s.paymentDate+'</div></div>';
+    html+='<div style="text-align:right;"><div style="font-size:12px;color:#6b7a99;text-decoration:line-through;">'+fmt(s.grossAmount)+'</div><div style="font-size:17px;font-weight:800;color:#60a5fa;">'+fmt(s.netAmount)+'</div></div></div>';
+    html+='<div style="background:rgba(248,113,113,0.06);border-radius:8px;padding:8px 12px;margin-bottom:8px;"><div style="display:flex;justify-content:space-between;font-size:13px;"><span style="color:#7c8db5;">\uCD1D \uACF5\uC81C\uC561</span><span style="color:#f87171;font-weight:600;">- '+fmt(std)+'</span></div></div>';
+    html+='<button onclick="togSC(\''+uid+'\')" id="btn'+uid+'" style="background:none;border:none;color:#4f8ef7;font-size:13px;padding:0;">\u25BC \uACF5\uC81C \uC0C1\uC138 \uBCF4\uAE30</button>';
+    html+='<div id="'+uid+'" style="display:none;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.06);">';
+    [{l:"\uC6D0\uCC9C\uC9D5\uC218(3.3%)",v:s.withholdingTax,c:"#f87171"},{l:"\uC0B0\uC7AC\uBCF4\uD5D8\uB8CC",v:s.industrialInsurance,c:"#fb923c"},{l:"\uACE0\uC6A9\uBCF4\uD5D8\uB8CC",v:s.employmentInsurance,c:"#fbbf24"},{l:"\uD50C\uB7AB\uD3FC \uC218\uC218\uB8CC",v:s.platformFee,c:"#a78bfa"}].forEach(function(i){if(i.v>0)html+='<div style="display:flex;justify-content:space-between;padding:6px 0;font-size:13px;border-bottom:1px solid rgba(255,255,255,0.04);"><span style="color:#7c8db5;">'+i.l+'</span><span style="color:'+i.c+';">- '+fmt(i.v)+'</span></div>';});
+    html+='</div><button onclick="delS('+s.id+')" style="background:none;border:none;color:#3d4460;font-size:12px;padding:6px 0 0;display:block;">\uC0AD\uC81C</button></div>';
+  });
+  el.innerHTML=html;
+}
+function togSC(uid){var el=g(uid),btn=g("btn"+uid);var v=el.style.display==="block";el.style.display=v?"none":"block";btn.textContent=v?"\u25BC \uACF5\uC81C \uC0C1\uC138 \uBCF4\uAE30":"\u25B2 \uC811\uAE30";}
+function delS(id){settlements=settlements.filter(function(x){return x.id!==id;});ls("rfa_settlements",settlements);render();}
+
+function renderTax(){
+  var yL=dailyLogs.filter(function(l){return new Date(l.date).getFullYear()===TY;});
+  var yInc=yL.reduce(function(s,l){return s+l.totalIncome;},0);
+  var yExp=yL.reduce(function(s,l){return s+l.totalExpense;},0);
+  var yNet=yInc-yExp;
+  var yS=settlements.filter(function(s){return new Date(s.paymentDate).getFullYear()===TY;});
+  var yG=yS.reduce(function(s,r){return s+r.grossAmount;},0);
+  var yWH=yS.reduce(function(s,r){return s+r.withholdingTax;},0);
+  var yInd=yS.reduce(function(s,r){return s+r.industrialInsurance;},0);
+  var yEmp=yS.reduce(function(s,r){return s+r.employmentInsurance;},0);
+  var taxable=Math.max(0,yNet-1500000);
+  var gTax=taxable<=12000000?taxable*0.06:taxable<=46000000?720000+(taxable-12000000)*0.15:5820000+(taxable-46000000)*0.24;
+  var addTax=Math.max(0,gTax-yWH);
+  function tr(lbl,val,col,minus,bold){return '<div class="tax-row" style="font-size:'+(bold?15:14)+'px;"><span style="color:#a0aec0;">'+lbl+'</span><span style="color:'+(col||"#e8e8f0")+';font-weight:'+(bold?700:500)+';">'+(minus?"- ":"")+fmt(val)+'</span></div>';}
+  var html='<div style="background:linear-gradient(135deg,rgba(79,142,247,0.15),rgba(124,77,255,0.15));border:1px solid rgba(79,142,247,0.25);border-radius:16px;padding:20px;margin-bottom:14px;">';
+  html+='<div style="font-size:12px;color:#7c8db5;margin-bottom:6px;">'+TY+'\uB144 \uC885\uD569\uC18C\uB4DD\uC138 \uC790\uB8CC</div>';
+  html+='<div style="font-size:24px;font-weight:800;margin-bottom:4px;">'+fmt(yNet)+'</div>';
+  html+='<div style="font-size:12px;color:#7c8db5;">\uC5F0\uAC04 \uC21C\uC218\uC775 (\uC218\uC785 - \uACBD\uBE44)</div></div>';
+  html+='<div class="card">'+tr("\uC138\uC804 \uBC30\uB2EC\uB8CC \uD569\uACC4",yG,"#34d399")+tr("\uCD1D \uC218\uC785",yInc,"#4ade80")+tr("\uCD1D \uC9C0\uCD9C",yExp,"#f87171",true)+'<div style="height:1px;background:rgba(255,255,255,0.08);margin:10px 0;"></div>'+tr("\uC21C\uC218\uC775",yNet,"#60a5fa",false,true)+'</div>';
+  html+='<div class="card"><div style="font-size:12px;color:#34d399;background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.12);border-radius:8px;padding:10px;margin-bottom:12px;">\uD50C\uB7AB\uD3FC\uC774 \uC774\uBBF8 \uACF5\uC81C\uD55C \uAE08\uC561\uC785\uB2C8\uB2E4.</div>'+tr("\uC6D0\uCC9C\uC9D5\uC218\uC138\uC561",yWH,"#f87171",true)+tr("\uC0B0\uC7AC\uBCF4\uD5D8\uB8CC",yInd,"#fb923c",true)+tr("\uACE0\uC6A9\uBCF4\uD5D8\uB8CC",yEmp,"#fbbf24",true)+'<div style="height:1px;background:rgba(255,255,255,0.08);margin:10px 0;"></div>'+tr("\uACF5\uC81C \uD569\uACC4",yWH+yInd+yEmp,"#f87171",true,true)+'</div>';
+  html+='<div class="card"><div style="font-size:12px;color:#fbbf24;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.15);border-radius:8px;padding:10px;margin-bottom:12px;">\u26A0\uFE0F \uCC38\uACE0\uC6A9 \uCD94\uC815\uCE58\uC785\uB2C8\uB2E4.</div>'+tr("\uACFC\uC138\uD45C\uC900",taxable,"#e8e8f0")+tr("\uC885\uD569\uC18C\uB4DD\uC138",gTax,"#fb923c")+tr("\uAE30\uB098\uBD80 \uC6D0\uCC9C\uC9D5\uC218",yWH,"#34d399",true)+'<div style="height:1px;background:rgba(255,255,255,0.08);margin:10px 0;"></div>'+tr("\uCD94\uAC00 \uB099\uBD80 \uC608\uC0C1",addTax,"#f87171",false,true)+tr("\uAC74\uAC15\uBCF4\uD5D8\uB8CC(7.09%)",yNet*0.0709,"#a78bfa")+'</div>';
+  // 수입 항목별
+  html+='<div class="card"><div class="card-title">\uC218\uC785 \uD56D\uBAA9\uBCC4 \uD569\uACC4</div>';
+  var feeTotal=yL.reduce(function(s,l){return s+l.deliveryFee;},0);
+  var missionTotal=yL.reduce(function(s,l){return s+(l.missionAmount||0);},0);
+  var supportTotal=yL.reduce(function(s,l){return s+(l.supportAmount||0);},0);
+  var otherTotal=yL.reduce(function(s,l){return s+(l.otherIncome||0);},0);
+  [{l:"\uBC30\uB2EC\uB8CC",v:feeTotal},{l:"\uBBF8\uC158 \uC131\uACF5\uAE08\uC561",v:missionTotal},{l:"\uC9C0\uC6D0\uAE08",v:supportTotal},{l:"\uAE30\uD0C0 \uC218\uC785",v:otherTotal}].forEach(function(i){if(i.v>0)html+='<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:14px;"><span style="color:#a0aec0;">'+i.l+'</span><span style="color:#4ade80;font-weight:600;">'+fmt(i.v)+'</span></div>';});
+  html+='<div style="display:flex;justify-content:space-between;padding-top:10px;font-size:15px;font-weight:700;"><span>\uD569\uACC4</span><span style="color:#4ade80;">'+fmt(yInc)+'</span></div></div>';
+  html+='<button onclick="download()" style="width:100%;padding:15px;border-radius:12px;border:none;background:linear-gradient(135deg,#4f8ef7,#7c4dff);color:#fff;font-weight:700;font-size:16px;margin-bottom:10px;">\uC138\uAE08 \uC790\uB8CC \uB2E4\uC6B4\uB85C\uB4DC</button>';
+  html+='<div style="height:1px;background:rgba(255,255,255,0.06);margin:6px 0 12px;"></div>';
+  html+='<button onclick="openM(\'m-reset\')" style="width:100%;padding:13px;border-radius:12px;border:1px solid rgba(248,113,113,0.3);background:rgba(248,113,113,0.06);color:#f87171;font-weight:600;font-size:15px;">\uBAA8\uB4E0 \uB370\uC774\uD130 \uCD08\uAE30\uD654</button>';
+  g("tax-content").innerHTML=html;
+}
+
+loadData();
+renderPL();
+render();
+</script>
+</body>
+</html>
